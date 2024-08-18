@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing NGINX
+      - yum update -y  # or apt-get update, depending on your environment
+      - yum install nginx -y  # or apt-get install nginx -y
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - mkdir -p /var/www/html
+      - cp index.html /var/www/html/
+      - cp appspec.yml /var/www/html/
+      - cp -r scripts /var/www/html/
+
+  post_build:
+    commands:
+      - echo Configuring NGINX
+      - nginx -t  # Test NGINX configuration
+      - nginx  # Start NGINX
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes
+  base-directory: /var/www/html  # Adjust based on where your build artifacts are stored
+  name: build-output  # This creates a folder named 'build-output' in your S3 bucket
+  s3-bucket: my-codebuild-artifacts  # Replace with your actual bucket name
+
