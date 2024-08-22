@@ -2,13 +2,13 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/html/
+    destination: /home/ubuntu
 hooks:
   AfterInstall:
-    - location: /var/www/html/install_nginx.sh
+    - location: ./install_nginx.sh
       timeout: 300
       runas: root
   ApplicationStart:
-    - location: /var/www/html/start_nginx.sh
+    - location: ./start_nginx.sh
       timeout: 300
       runas: root
